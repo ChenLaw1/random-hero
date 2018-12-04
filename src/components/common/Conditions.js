@@ -13,8 +13,8 @@ class App extends Component {
 
   render() {
     return (
-      <form className="conditions">
-        <label>Repeat Limit:</label>
+      <div className="conditions">
+        <label>Repeat Limit:</label>&nbsp;
         <input 
           type='number' 
           value={this.props.limit} 
@@ -22,7 +22,7 @@ class App extends Component {
           max={this.props.heroCount - 1}
           onChange={this.limitChange}
         />
-      </form>
+      </div>
     );
   }
 }

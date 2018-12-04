@@ -1,6 +1,7 @@
 {
   "name": "random-hero",
   "version": "0.1.0",
+  "homepage": "/random-hero",
   "private": true,
   "dependencies": {
     "react": "^16.6.3",

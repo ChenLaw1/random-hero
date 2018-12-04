@@ -1,0 +1,15 @@
+.heroIcon {
+    height: 128px;
+    display: block;
+    margin: 0 auto;
+    border: 4px solid white;
+}
+
+.heroesHistory li:first-of-type {
+    text-decoration: underline;
+    font-size: 30px;
+}
+
+.heroesHistory li:not(:first-of-type) {
+    opacity: .75;
+}

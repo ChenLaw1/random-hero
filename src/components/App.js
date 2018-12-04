@@ -2,42 +2,58 @@ import React, { Component } from 'react';
 import Conditions from './common/Conditions';
 // import Output from './common/Output';
 import './App.css';
-import { heroesList } from '../global/consts';
+import { availableIcons, heroesList } from '../global/consts';
+import '../images/ana.png';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      heroesList,
-      history: [1,2,3],
-      repeatLimit: 10
+      history: [],
+      repeatLimit: 10,
+      iconImgSrc: availableIcons['default.png']
     }
 
     this.updateRepeatLimit = this.updateRepeatLimit.bind(this);
     this.randomizeHero = this.randomizeHero.bind(this);
+    this.clearHistory = this.clearHistory.bind(this);
+  }
+
+  clearHistory = () => {
+    this.setState({
+      history: [],
+      iconImgSrc: availableIcons['default.png']
+    });
   }
 
   randomizeHero = () => {
     let { history, repeatLimit } = this.state;
-    const heroCount = this.state.heroesList.length - 1;
+    const heroCount = heroesList.length - 1;
 
     let random;
     do {
       random = Math.floor(Math.random() * (heroCount + 1));
     } while (history.includes(random))
 
-    history = [...history, random];
+    history = [random, ...history];
+
+    const newImg = availableIcons[heroesList[random]['imgSrc'] || 'default.png'];
 
     if (history.length > repeatLimit) {
-      history = history.slice(-repeatLimit);
+      history = history.slice(0, repeatLimit);
     }
-    this.setState({history});
+    
+
+    this.setState({
+      history,
+      iconImgSrc: newImg
+    });
   }
 
   updateRepeatLimit = (limit) => {
     let { history } = this.state;
-    const heroCount = this.state.heroesList.length;
+    const heroCount = heroesList.length;
 
     limit = Math.min(Math.max(parseInt(limit), 1), heroCount - 1);
 
@@ -48,19 +64,25 @@ class App extends Component {
   };
 
   render() {
-    const heroes = this.state.history.map((item, i) => <li key={i}>{this.state.heroesList[item]}</li>);
+    const heroes = this.state.history.map((item, i) => <li key={i}>{heroesList[item]['name']}</li>);
 
     return (
       <div className="App">
         <Conditions 
-          heroCount={this.state.heroesList.length}
+          heroCount={heroesList.length}
           limit={this.state.repeatLimit}
           onLimitChange={this.updateRepeatLimit}
         />
         <hr />
-        <button className="randomBtn" onClick={this.randomizeHero}>Random Hero</button>
+        <div className='btnContainer'>
+          <button className="randomBtn" onClick={this.randomizeHero}>Random Hero</button>
+          <button className="clearHistoryBtn" onClick={this.clearHistory}>Clear History</button>
+        </div>
         <hr />
-        <ul>
+        <img className='heroIcon'
+          src={this.state.iconImgSrc}
+          alt='hero icon'/>
+        <ul className='heroesHistory'>
           {heroes}
         </ul>
       </div>
